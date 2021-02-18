@@ -1,10 +1,10 @@
 class MatterEngine {
-	constructor() {
+	constructor(WIDTH, HEIGHT) {
 		var engine = this.engine = Matter.Engine.create(document.body, {
 			render: {
 				options: {
-					width: 1000,
-					height: 600,
+					width: WIDTH,
+					height: HEIGHT,
 					pixelRatio: 1,
 					background: '#fafafa',
 					wireframeBackground: '#222',
@@ -34,11 +34,12 @@ class MatterEngine {
 		this._lastTouches = {};
 		
 		// ゆかり
+		const WALL_W = 50;
 		let walls = [
-			Matter.Bodies.rectangle(0,    300, 50, 600, { isStatic: true }), // L
-			Matter.Bodies.rectangle(1000, 300, 50, 600, { isStatic: true }), // R
-			Matter.Bodies.rectangle(500,   0, 1000, 50, { isStatic: true }), // U
-			Matter.Bodies.rectangle(500, 600, 1000, 50, { isStatic: true }), // D
+			Matter.Bodies.rectangle(    0-WALL_W/2, HEIGHT/2, WALL_W, HEIGHT, { isStatic: true }), // L
+			Matter.Bodies.rectangle(WIDTH+WALL_W/2, HEIGHT/2, WALL_W, HEIGHT, { isStatic: true }), // R
+			Matter.Bodies.rectangle(WIDTH/2,      0-WALL_W/2, WIDTH, WALL_W, { isStatic: true }), // U
+			Matter.Bodies.rectangle(WIDTH/2, HEIGHT+WALL_W/2, WIDTH, WALL_W, { isStatic: true }), // D
 		] 
 		// クリック機能
 		var mousedrag = Matter.MouseConstraint.create(engine, {

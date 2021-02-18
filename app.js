@@ -40,12 +40,14 @@ function createMenuDom(json) {
 	$(document).ready(() => $('.drawer').drawer());
 	
 	// 物理エンジン開始
-	let engine = new MatterEngine();
+	const WORLD_WIDTH = document.documentElement.clientWidth;
+	const WORLD_HEIGHT = document.documentElement.clientHeight;
+	$('#pow').css({'left': `${WORLD_WIDTH/2}px`})
+	let engine = new MatterEngine(WORLD_WIDTH, WORLD_HEIGHT);
 	
 	
 	let addNum = function(num) {
 		let name = keys[num]
-		console.log(num);
 		engine.addVoiceroid(name, json[name])
 	}
 	
