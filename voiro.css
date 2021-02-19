@@ -1,0 +1,162 @@
+html, body {
+	padding: 0;
+	margin: 0;
+}
+body {
+	background-color: #fff;
+	font-family: Arial, Helvetica, Verdana;
+	font-size: 14px;
+	line-height: 22px;
+	color: #666;
+	position: relative;
+	-webkit-text-size-adjust: none;
+}
+
+.header nav {
+	display: none;
+}
+
+.header {
+	text-align: center;
+}
+.header {
+	background: #4bb5ef;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+	line-height: 50px;
+
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	height: 50px;
+	padding: 0 50px;
+}
+.header a {
+	display: block;
+	width: 28px;
+	height: 18px;
+	padding: 11px;
+	margin: 5px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.header a:before,
+.header a:after {
+	content: '';
+	display: block;
+	background: #fff;
+	height: 2px;
+}
+.header a span {
+	background: #fff;
+	display: block;
+	height: 2px;
+	margin: 6px 0;
+}
+
+.mm-spn li.label {
+	line-height: 0;
+	background-color: #ccc;
+	cursor: auto;
+}
+.mm-spn li.button a:hover {
+	text-decoration: underline;
+}
+.mm-spn li.button a {
+	 padding-left: calc(var(--mm-spn-item-indent) * 2);
+}
+.mm-spn li:after {
+	margin-left: 0;
+}
+.mm-spn li a {
+	user-select: none;
+}
+.mm-spn li a.img {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.img::before{
+	content: '';
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	background-size: contain;
+	vertical-align: middle;
+	image-rendering: pixelated;
+}
+
+.mm-spn li.num {
+	cursor: auto;
+}
+.num * {
+	user-select: none;
+}
+.num span {
+	display: inline-block;
+}
+.num input[type="number"]::-webkit-outer-spin-button,
+.num input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+.num input[type="number"] { 
+	-moz-appearance:textfield;
+	width: 30px;
+	text-align: center;
+}
+
+
+
+.ctl {
+	color: white;
+	text-align: center;
+	width: 15px;
+	height: 15px;
+	border: 1px solid transparent;
+	border-radius: 100%;
+	background-color: #3399fa;
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+	cursor: pointer;
+}
+.ctl.p {
+	content: '+';
+	line-height: 16px;
+	right: 60px;
+}
+.ctl.m {
+	content: '－';
+	line-height: 15px;
+	right: 0px;
+}
+
+/* メニュー幅 */
+.mm-ocd__content {
+	opacity: 0.8;
+	width: auto;
+	max-width: 90vw;
+}
+.mm-ocd__backdrop {
+	width: 100%;
+}
+.mm-spn ul {
+	padding: 0;
+}
+
+
+canvas {
+	position: absolute;
+	top: 50px;
+	left: 0;
+}
+#pow {
+	position: absolute;
+	z-index: 10;
+	top: 8vh;
+	left: 50vw;
+	transform: translateX(-50%);
+	font-size: x-large;
+}

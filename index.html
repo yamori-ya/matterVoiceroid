@@ -1,81 +1,62 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="utf-8">
 	<title></title>
 	
-	<!-- drawer.css -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
-	<!-- jquery & iScroll -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
-	<!-- drawer.js -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
-	<script src="matter.min.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width user-scalable=no" />
 	
-	<style>
-	.drawer-nav {
-		background-color: rgba(255,255,255,0.7);
-	}
-	.drawer-menu-item {
-		cursor: pointer;
-		user-select: none;
-	}
-	.drawer-menu-item.img::before{
-		content: '';
-		display: inline-block;
-		width: 50px;
-		height: 50px;
-		background-size: contain;
-		vertical-align: middle;
-	}
-	#pow {
-		position: absolute;
-		z-index: 10;
-		top: 100px;
-		left: 500px;
-		transform: translateX(-50%);
-		font-size: x-large;
-	}
-	canvas {
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-	</style>
+	
+	<!-- メニューライブラリ -->
+	<link type="text/css" rel="stylesheet" href="mmenu-light.css" />
+	<script type="text/javascript" src="mmenu-light.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="matter.js"></script>
+	
+	<link type="text/css" rel="stylesheet" href="voiro.css" />
 </head>
-<body class="drawer drawer--left">
-	<header role="banner">
-		<!-- ハンバーガーボタン -->
-		<button type="button" class="drawer-toggle drawer-hamburger">
-			<span class="sr-only">toggle navigation</span>
-			<span class="drawer-hamburger-icon"></span>
-		</button>
-		<nav class="drawer-nav" role="navigation">
-			<ul id="add-obj" class="drawer-menu">
-				<li><span class="drawer-brand">けす</span></li>
-				<li><a class="drawer-menu-item" id="rm-lastadd">さいごにいれた</a></li>
-				<li><a class="drawer-menu-item" id="rm-lasttoutch">さいごにさわった</a></li>
-				<li><a class="drawer-menu-item" id="rm-rnd">らんだむ</a></li>
-				<li><a class="drawer-menu-item" id="rm-all">ぜんぶ</a></li>
-				
-				<li><span class="drawer-brand">いれる</span></li>
-				<li><a class="drawer-menu-item" id="ad-all">ぜんぶ</a></li>
-				<li><a class="drawer-menu-item" id="ad-rnd">らんだむ</a></li>
-			</ul>
-		</nav>
-	</header>
+<body>
+	
+	<div id="page">
+		<div class="header">
+			<a href="#menu"><span></span></a>
+			ぼいろ
+			<nav id="menu">
+				<ul>
+					
+					<li class="label"><a>でばっぐ</a></li>
+					<li class="button"><a id="frame">frame</a></li>
+					
+					<li class="label"><a>けす</a></li>
+					<li class="button"><a id="rm-lastadd">さいごにいれた</a></li>
+					<li class="button"><a id="rm-lasttouch">さいごにさわった</a></li>
+					<li class="button"><a id="rm-rnd">らんだむ</a></li>
+					<li class="button"><a id="rm-all">ぜんぶ</a></li>
+					
+					<li class="label"><a>いれる</a></li>
+					<li class="num">
+						<span>さいず</span>
+						<span><input id="size" type="number" value="5" /></span>
+					</li>
+					<li class="button"><a id="ad-all">ぜんぶ</a></li>
+					<li class="button"><a id="ad-rnd">らんだむ</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<div class="content"></div>
+	</div>
 	
 	<button id="pow">pow</button>
 	
-	<div id="prop" style="margin-left: 700px; display: none;">
+	<!-- <div id="prop" style="margin-left: 700px; display: none;">
 		<button id="frame">frame</button>
 		x<input class="Offset" id="x" type="number" value="0" style="width: 50px;" />
 		y<input class="Offset" id="y" type="number" value="0" style="width: 50px;" />
 		c<input id="num" type="number" value="0" style="width: 50px;" />
 		<textarea id="copy"></textarea>
-	</div>
-	
+	</div> -->
 	
 	<script src="engine.js"></script>
 	<script src="app.js"></script>

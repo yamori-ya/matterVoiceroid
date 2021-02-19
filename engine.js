@@ -1,6 +1,6 @@
 class MatterEngine {
 	constructor(WIDTH, HEIGHT) {
-		var engine = this.engine = Matter.Engine.create(document.body, {
+		var engine = this.engine = Matter.Engine.create($('.content')[0], {
 			render: {
 				options: {
 					width: WIDTH,
@@ -10,22 +10,7 @@ class MatterEngine {
 					wireframeBackground: '#222',
 					hasBounds: true,
 					enabled: true,
-					wireframes: false,
-					showSleeping: false,
-					showDebug: false,
-					showBroadphase: false,
-					showBounds: false,
-					showVelocity: false,
-					showCollisions: false,
-					showSeparations: false,
-					showAxes: false,
-					showPositions: false,
-					showAngleIndicator: false,
-					showIds: false,
-					showShadows: false,
-					showVertexNumbers: false,
-					showConvexHulls: false,
-					showInternalEdges: false
+					wireframes: false
 				}
 			}
 		});
@@ -43,10 +28,10 @@ class MatterEngine {
 		] 
 		// クリック機能
 		var mousedrag = Matter.MouseConstraint.create(engine, {
-			element: document.body, 
+			element: $('.content')[0],
 			constraint: {
 				render: {
-					strokeStyle: "rgba(255, 255, 255, 255)" //マウスの動きを表示する(白)
+					strokeStyle: "rgba(255, 50, 50, 255)" //マウスの動きを表示する(白)
 				}
 			}
 		});
@@ -64,6 +49,7 @@ class MatterEngine {
 		
 		// 物理シミュレーションを実行
 		Matter.Engine.run(engine);
+		// Matter.Render.run(render);
 	}
 	
 	get lastAdded() {
@@ -73,32 +59,50 @@ class MatterEngine {
 		return this._lastTouches;
 	}
 	toggleWireframes() {
+		console.log(this.engine.render.options.wireframes);
 		this.engine.render.options.wireframes ^= true
 	}
 	
-	addVoiceroid(name, obj) {
+	addVoiceroid(img, obj, x, y, scale = 1) {
 		let points = obj.points.map(i => {return {x:i.x, y:i.y}})
 		let vertices = Matter.Vertices.create(points);
+		vertices = Matter.Vertices.scale(vertices, scale/6, scale/6)
 		
-		let scale = 1;
-		vertices = Matter.Vertices.scale(vertices, scale, scale)
-		
-		let body = Matter.Bodies.fromVertices(500, 200, vertices, {
+		let body = Matter.Bodies.fromVertices(x, y, vertices, {
 			isStatic: false,
 			render: {
 				sprite: {
-					texture: 'sprite/' + name,
-					xScale: scale,
-					yScale: scale
+					texture: img
 				}
 			},
 			timeScale: 1
 		}, true);
 		
 		Matter.World.add(this.engine.world, body)
+		// Matter.Body.setMass(body, body.mass * scale)
 		if (obj.xOffset != 0) body.render.sprite.xOffset = (obj.xOffset / 100)
 		if (obj.yOffset != 0) body.render.sprite.yOffset = (obj.yOffset / 100)
 		this._lastAdded = body;
+			
+		
+		// let body = Matter.Bodies.fromVertices(x, y, vertices, {
+		// 	isStatic: false,
+		// 	render: {
+		// 		sprite: {
+		// 			texture: 'sprite/' + name,
+		// 			xScale: scale,
+		// 			yScale: scale
+		// 		}
+		// 	},
+		// 	timeScale: 1
+		// }, true);
+		// 
+		// Matter.World.add(this.engine.world, body)
+		// // console.log(body.mass);
+		// Matter.Body.setMass(body, body.mass * scale)
+		// if (obj.xOffset != 0) body.render.sprite.xOffset = (obj.xOffset / 100)
+		// if (obj.yOffset != 0) body.render.sprite.yOffset = (obj.yOffset / 100)
+		// this._lastAdded = body;
 	}
 	
 	clear(body) {
