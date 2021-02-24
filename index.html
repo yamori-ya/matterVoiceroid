@@ -12,7 +12,7 @@
 	<script type="text/javascript" src="mmenu-light.js"></script>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="matter.js"></script>
+	<script src="matter.min.js"></script>
 	
 	<link type="text/css" rel="stylesheet" href="voiro.css" />
 </head>
@@ -24,23 +24,30 @@
 			ぼいろ
 			<nav id="menu">
 				<ul>
+					<li class="label">　</li>
 					
-					<li class="label"><a>でばっぐ</a></li>
-					<li class="button"><a id="frame">frame</a></li>
+					<li class="parent"><a>でばっぐ</a></li>
+					<li class="toggle" id="frame">frame</li>
+					<li class="toggle" id="gyro">ジャイロ</li>
+					<!-- 
+					<li class="label" id="j-alpha">水平:</li>
+					<li class="label" id="j-beta">縦:</li>
+					<li class="label" id="j-gamma">横:</li>
+					 -->
+					<li class="range" id="air" max="10" value="1">空気抵抗</li>
+					<li class="range" id="fic" max="10" value="1">摩擦係数</li>
+					<li class="range" id="res" max="10" value="0">反発係数</li>
+					<li class="range" id="gravity" max="10" value="10">重力</li>
 					
-					<li class="label"><a>けす</a></li>
-					<li class="button"><a id="rm-lastadd">さいごにいれた</a></li>
-					<li class="button"><a id="rm-lasttouch">さいごにさわった</a></li>
-					<li class="button"><a id="rm-rnd">らんだむ</a></li>
-					<li class="button"><a id="rm-all">ぜんぶ</a></li>
+					<li class="parent"><a>けす</a></li>
+					<li class="toggle" id="rm-touch">さわってけす</li>
+					<li class="button" id="rm-rnd">らんだむ</li>
+					<li class="button" id="rm-all">ぜんぶ</li>
 					
-					<li class="label"><a>いれる</a></li>
-					<li class="num">
-						<span>さいず</span>
-						<span><input id="size" type="number" value="5" /></span>
-					</li>
-					<li class="button"><a id="ad-all">ぜんぶ</a></li>
-					<li class="button"><a id="ad-rnd">らんだむ</a></li>
+					<li class="parent"><a>いれる</a></li>
+					<li class="number" id="size" value="5">さいず</li>
+					<li class="button" id="ad-all">ぜんぶ</li>
+					<li class="button" id="ad-rnd">らんだむ</li>
 				</ul>
 			</nav>
 		</div>
@@ -49,14 +56,6 @@
 	</div>
 	
 	<button id="pow">pow</button>
-	
-	<!-- <div id="prop" style="margin-left: 700px; display: none;">
-		<button id="frame">frame</button>
-		x<input class="Offset" id="x" type="number" value="0" style="width: 50px;" />
-		y<input class="Offset" id="y" type="number" value="0" style="width: 50px;" />
-		c<input id="num" type="number" value="0" style="width: 50px;" />
-		<textarea id="copy"></textarea>
-	</div> -->
 	
 	<script src="engine.js"></script>
 	<script src="app.js"></script>

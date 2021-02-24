@@ -15,8 +15,7 @@ class MatterEngine {
 			}
 		});
 		
-		this._lastAdded = {};
-		this._lastTouches = {};
+		this.onTouchObject = [];
 		
 		// ゆかり
 		const WALL_W = 50;
@@ -35,46 +34,65 @@ class MatterEngine {
 				}
 			}
 		});
-		// updateを上書き
-		let $this = this;
-		let _update = Matter.MouseConstraint.update
-		Matter.MouseConstraint.update = function(mouseConstraint, bodies) {
-			_update(mouseConstraint, bodies)
-			if (mouseConstraint.body) {
-				$this._lastTouches = mouseConstraint.body;
-			}
-		}
 		
+		let $this = this;
+		Matter.Events.on(mousedrag, "mousedown", (e) => {
+			if (e.source.body) {
+				for (let callback of $this.onTouchObject) {
+					callback(e.source.body)
+				}
+			}
+		})
 		Matter.World.add(engine.world, [ mousedrag, ...walls ]);
 		
 		// 物理シミュレーションを実行
 		Matter.Engine.run(engine);
-		// Matter.Render.run(render);
 	}
 	
-	get lastAdded() {
-		return this._lastAdded;
+	on(eventName, callback) {
+		if (!eventName || !callback || typeof callback !== 'function') 
+			return;
+		switch(eventName) {
+		case 'touchobject':
+			this.onTouchObject.push(callback);
+			break;
+		}
 	}
+	off(eventName, callback) {
+		if (!eventName) 
+			return
+		switch(eventName) {
+		case 'touchobject':
+			this.onTouchObject = (callback && typeof callback === 'function')
+				? this.onTouchObject.filter(c => c != callback) // 対象のみ削除
+				: [] // 全削除
+			break;
+		}
+	}
+	
+	
+	
 	get lastTouches() {
 		return this._lastTouches;
 	}
-	toggleWireframes() {
-		console.log(this.engine.render.options.wireframes);
-		this.engine.render.options.wireframes ^= true
+	
+	set wireframes(val) {
+		this.engine.render.options.wireframes = val
 	}
 	
 	addVoiceroid(img, obj, x, y, scale = 1) {
 		let points = obj.points.map(i => {return {x:i.x, y:i.y}})
 		let vertices = Matter.Vertices.create(points);
-		vertices = Matter.Vertices.scale(vertices, scale/6, scale/6)
+		vertices = Matter.Vertices.scale(vertices, scale/6, scale/6) // 6倍のテクスチャから輪郭を作成したいるため
 		
 		let body = Matter.Bodies.fromVertices(x, y, vertices, {
 			isStatic: false,
 			render: {
-				sprite: {
-					texture: img
-				}
+				sprite: { texture: img }
 			},
+			friction: 0.1,      // 摩擦係数 def:0.1
+			frictionAir: 0.01 , // 空気抵抗 def:0.01
+			restitution: 0,     // 反発係数 def:0
 			timeScale: 1
 		}, true);
 		
@@ -82,27 +100,6 @@ class MatterEngine {
 		// Matter.Body.setMass(body, body.mass * scale)
 		if (obj.xOffset != 0) body.render.sprite.xOffset = (obj.xOffset / 100)
 		if (obj.yOffset != 0) body.render.sprite.yOffset = (obj.yOffset / 100)
-		this._lastAdded = body;
-			
-		
-		// let body = Matter.Bodies.fromVertices(x, y, vertices, {
-		// 	isStatic: false,
-		// 	render: {
-		// 		sprite: {
-		// 			texture: 'sprite/' + name,
-		// 			xScale: scale,
-		// 			yScale: scale
-		// 		}
-		// 	},
-		// 	timeScale: 1
-		// }, true);
-		// 
-		// Matter.World.add(this.engine.world, body)
-		// // console.log(body.mass);
-		// Matter.Body.setMass(body, body.mass * scale)
-		// if (obj.xOffset != 0) body.render.sprite.xOffset = (obj.xOffset / 100)
-		// if (obj.yOffset != 0) body.render.sprite.yOffset = (obj.yOffset / 100)
-		// this._lastAdded = body;
 	}
 	
 	clear(body) {
@@ -110,16 +107,12 @@ class MatterEngine {
 	}
 	clearRnd() {
 		let dynamic = this.engine.world.bodies.filter(b => !b.isStatic);
-		let r = Math.floor(Math.random() * (dynamic.length + 1));
+		let r = Math.floor(Math.random() * (dynamic.length));
 		this.clear(dynamic[r]);
 	}
 	clearAll() {
-		for (let i = this.engine.world.bodies.length; i > 0; i--) {
-			let body = this.engine.world.bodies[i];
-			if (body && !body.isStatic) {
-				this.clear(body);
-			}
-		}
+		let dynamic = this.engine.world.bodies.filter(b => !b.isStatic);
+		dynamic.forEach(b => this.clear(b))
 	}
 	explosion() {
 		var bodies = Matter.Composite.allBodies(this.engine.world);
@@ -134,6 +127,26 @@ class MatterEngine {
 				});
 			}
 		}
-	};
-	
+	}
+	set gravity(g) {
+		let gravity = this.engine.world.gravity
+		if ('x' in g) gravity.x = g.x
+		if ('y' in g) gravity.y = g.y
+		if ('scale' in g) gravity.scale = g.scale / 10000
+	}
+	set friction(g) {
+		for (let body of this.engine.world.bodies) {
+			body.friction = g / 10
+		}
+	}
+	set frictionAir(g) {
+		for (let body of this.engine.world.bodies) {
+			body.frictionAir = g / 100
+		}
+	}
+	set restitution(g) {
+		for (let body of this.engine.world.bodies) {
+			body.restitution = g / 10
+		}
+	}
 }
